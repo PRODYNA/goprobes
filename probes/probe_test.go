@@ -34,13 +34,11 @@ func TestServeHttp(t *testing.T) {
 	p.AddReady(NewGoRoutineProbe(10))
 	p.AddLive(NewGoRoutineProbe(10))
 
-
 	m := mux.Router{}
 	p.HandleProbes(&m)
 	m.ServeHTTP(httptest.NewRecorder(), httptest.NewRequest("GET","http://localhost:8080/ready",strings.NewReader("")))
 	m.ServeHTTP(httptest.NewRecorder(), httptest.NewRequest("GET","http://localhost:8080/live",strings.NewReader("")))
 	m.ServeHTTP(httptest.NewRecorder(), httptest.NewRequest("GET","http://localhost:8080/start",strings.NewReader("")))
-
 
 	p.AddLive(NewGoRoutineProbe(0))
 	m.ServeHTTP(httptest.NewRecorder(), httptest.NewRequest("GET","http://localhost:8080/live",strings.NewReader("")))
